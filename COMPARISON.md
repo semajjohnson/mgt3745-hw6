@@ -4,8 +4,8 @@ Feature: F2, Create a trip and invite members. Spec copied unchanged from `mehta
 
 | Builder | Project name | Build time | Model |
 |---|---|---|---|
-| bolt.new | Tripcast | 8 minutes | <fill in> |
-| Google AI Studio | Trip Moments | 5m 7s | <fill in> |
+| bolt.new | Tripcast | 8 minutes | <Opus 5.5> |
+| Google AI Studio | Trip Moments | 5m 7s | <Opus 5.5> |
 
 ## Row by Row
 
@@ -18,11 +18,10 @@ Feature: F2, Create a trip and invite members. Spec copied unchanged from `mehta
 **Totals: bolt.new 1 of 3. AI Studio 2 of 3.**
 
 ## Scope Creep
-
 | Builder | Files created or changed the feature did not need | Features added that F2 does not ask for | Things FEATURES.md excludes |
 |---|---|---|---|
-| bolt.new | <count> | Remove member | None |
-| AI Studio | <count> | Leave trip, delete trip permanently, sample moments, a text-message preview, a Feature Verification Controls panel, a person switcher | None |
+| bolt.new | 8: `package.json`, `package-lock.json`, `supabase-client.js`, `.env`, two `supabase/migrations/*.sql`, `public/vite.svg`, `.gitignore` | Remove member; a display-name field at sign-up that is never saved | None |
+| AI Studio | 1 (`metadata.json`) | Remove member, leave trip, delete trip permanently, sample moments, a text-message preview, a Feature Verification Controls panel, a person switcher | None |
 
 Both also broke the prompt's "no framework, no dependencies" instruction. bolt added Vite and `@supabase/supabase-js` plus two Supabase tables and two server functions. AI Studio's `package.json` is still the Build tab's template, named "react-example," listing React, Tailwind, Express, `@google/genai`, and motion, with application logic in TypeScript requiring a Vite build.
 
@@ -68,11 +67,41 @@ Committed before either builder was scored.
 
 ### Scores (commit after the weights)
 
-| Criterion | Weight | bolt.new | AI Studio |
-|---|---|---|---|
-| <criterion> | <weight> | <1 to 5> | <1 to 5> |
-| **Weighted total** | | <total> | <total> |
+## Scores and Recommendation
 
+Scores assigned after the criteria and weights above were committed.
+
+| Criterion | Weight | bolt.new | AI Studio |
+|---|---:|---:|---:|
+| Satisfies the F2 EARS rows | 5 | 2 (10) | 3 (15) |
+| Fits ADR-001: Workers, D1, no added vendor | 5 | 1 (5) | 3 (15) |
+| Correctness of what it did build | 4 | 1 (4) | 4 (16) |
+| Respects the no-framework, no-dependency instruction | 3 | 2 (6) | 2 (6) |
+| Honesty of its own summary | 3 | 2 (6) | 2 (6) |
+| Style compliance | 2 | 3 (6) | 4 (8) |
+| **Weighted total (max 110)** | | **37** | **66** |
+
+**Why the low scores.**
+
+*bolt, ADR-001 fit = 1.* It chose Supabase on its own: a vendor absent from TOOLS.md, holding trip data, member records, and my real email address, against an ADR that names Cloudflare Workers and D1. This is no longer hypothetical — signing in created an account there.
+
+*bolt, correctness = 1.* Nothing past sign-in works. The dashboard is one error message with no create-trip form, so F2-1 is unreachable rather than degraded.
+
+*AI Studio, EARS rows = 3 not 5.* It passes 2 of 3, but the row it fails is the one the feature turns on: a non-member sees the trip name, creator, note, member count, and the invite link itself.
+
+*Both, honesty = 2.* bolt's summary claimed nothing loads from another origin while calling Supabase on every action. AI Studio's claimed no external dependencies and that trip details are never shown without a valid link. Both are checkably false.
+
+**Recommendation: Google AI Studio for F2 in Phase 2.**
+
+It produced a running application that honors the team's architecture by default — no added vendor, no account elsewhere — and its failure is a visibility bug in code we can read and fix. bolt produced a more ambitious system that does not run and that quietly moved our data to a third party.
+
+**What gets harder with this choice.** AI Studio faked sign-in with a person-switcher over `localStorage`, so it built nothing toward F1 and nothing that survives leaving the browser. bolt, for all its faults, produced real authentication and a real database schema — work we will now do ourselves. Choosing AI Studio trades a working demo today for more backend work in Phase 2, and its 14px body text came from a prompt omission that will recur unless STYLE.md travels whole.
+
+**Second consequence worth naming.** My verdicts are not equally evidenced. AI Studio's come from driving the app as a non-member; bolt's come from reading source, because bolt never got past sign-in. A builder that cannot be run cannot be reviewed the same way, which is itself an argument for the recommendation and a caveat on the scores.
+
+## Handoff
+
+<Link to the pull request or issue you open in the team repository proposing the FEATURES.md changes from Spec Gaps above.>
 ### Decision
 
 <Which builder your team should use for this feature in Phase 2, why, and at least one thing that gets harder with that choice. Tie the reasoning to your team's ADR-001 stack.>

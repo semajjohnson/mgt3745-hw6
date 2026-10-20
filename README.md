@@ -13,9 +13,13 @@
 
 ## See It Work
 
-| bolt.new | AI Studio |
+## See It Work
+
+| bolt.new (Tripcast) | Google AI Studio (Trip Moments) |
 |---|---|
-| ![bolt build](docs/img/bolt.png) | ![AI Studio build](docs/img/aistudio.png) |
+| ![Signed in, the dashboard shows only "We could not load your trips"](docs/bolt-f2-1-dashboard-error.png) | ![Elena, not a member and using no invite link, sees the trip name, creator, note, member count, and the invite link](docs/aistudio-f2-2-nonmember-sees-trip.png) |
+
+One prompt, two builders. bolt.new built an account system the spec never asked for and then could not load a single trip. AI Studio built a working app that shows a non-member everything F2-2 says to hide.
 
 <Replace the two images above with your own screenshots, or one side-by-side GIF.>
 
