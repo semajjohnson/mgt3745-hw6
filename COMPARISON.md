@@ -135,6 +135,8 @@ It produced a running application that honors the team's architecture by default
 
 ## Handoff
 
-Pull request or issue proposing a FEATURES.md change: _(URL)_
+Pull request proposing a FEATURES.md change: https://github.com/mehtaaashi05/mgt3745-team-Alpha-/pull/68
 
-Proposing spec gaps 1, 2 and 3 as FEATURES.md changes: the F1 dependency in F2, a rule on what an invite link may encode, and a definition of "trip details" in F2-2. Gaps 5 and 6 are included as suggestions. Gap 4 is an architecture note rather than a FEATURES.md change and is raised separately in the team chat.
+Proposes spec gaps 1, 2 and 3 as changes to F2: the dependency on F1, a definition of "trip details" in F2-2, and a new F2-4 on what an invite link may encode. Gaps 5 and 6 are noted in the pull request but not proposed as rows. Gap 4 is an architecture note rather than a FEATURES.md change, since ARCHITECTURE.md already decides where trips are stored; the gap is that no architecture travelled with my prompt, which is a process fix for Phase 2 delegations.
+
+Rishika owns FEATURES.md, so this is a proposal rather than a decision. The team decides whether to merge it.
