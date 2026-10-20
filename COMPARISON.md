@@ -98,3 +98,43 @@ Committed before either builder was scored.
 | Respects the stated constraints: no framework, no dependencies | 3 | Both failed this, so it separates them only by degree. Weighted below the rows themselves. |
 | Honesty of its own summary | 3 | A builder that reports compliance it does not have makes review more expensive, because nothing it says can be taken at face value. |
 | Style compliance | 2 | Both were close, and it is the cheapest category to fix by hand. |
+
+## Scores and Recommendation
+
+Scores assigned after the criteria and weights above were committed.
+
+| Criterion | Weight | bolt.new | AI Studio |
+|---|---:|---:|---:|
+| Satisfies the F2 EARS rows | 5 | 2 (10) | 3 (15) |
+| Fits ADR-001: Workers, D1, no added vendor | 5 | 1 (5) | 3 (15) |
+| Correctness of what it did build | 4 | 1 (4) | 4 (16) |
+| Respects the no-framework, no-dependency instruction | 3 | 2 (6) | 2 (6) |
+| Honesty of its own summary | 3 | 2 (6) | 2 (6) |
+| Style compliance | 2 | 3 (6) | 4 (8) |
+| **Weighted total (max 110)** | | **37** | **66** |
+
+**Why the low scores.**
+
+*bolt, ADR-001 fit = 1.* It chose Supabase on its own: a vendor absent from TOOLS.md, holding trip data, member records and my real email address, against an ADR that names Cloudflare Workers and D1. This stopped being hypothetical when signing in created an account there, and it returned a `.env` carrying that project's live URL and anon key.
+
+*bolt, correctness = 1.* Nothing past sign-in works. The dashboard is one error message with no create form, so F2-1 is unreachable rather than degraded.
+
+*AI Studio, EARS rows = 3 not 5.* It passes 2 of 3, but the row it fails is the one the feature turns on, and it fails it twice: a non-member sees everything, and the invite link leaks the trip name.
+
+*AI Studio, ADR-001 fit = 3 not 5.* It added no vendor, which is the important part, but it put everything in `localStorage` rather than anything resembling D1, so none of its storage work carries into Phase 2.
+
+*Both, honesty = 2.* bolt's summary claimed nothing loads from another origin while calling Supabase on every action and carrying `bolt.new` image URLs in its `index.html`. AI Studio's claimed no external dependencies and that trip details are never shown without a valid link. Both are checkably false.
+
+**Recommendation: Google AI Studio for F2 in Phase 2.**
+
+It produced a running application that honors the team's architecture by default, with no added vendor, no account created elsewhere and no credential returned, and its failure is a visibility bug in code we can read and fix in an afternoon. bolt produced a more ambitious system that does not run and that quietly moved our data to a third party.
+
+**What gets harder with this choice.** AI Studio faked sign-in with a person-switcher over `localStorage`, so it built nothing toward F1 and nothing that survives leaving the browser. bolt, for all its faults, produced working authentication and a real database schema with row-level policies, which is work the team will now do itself. Choosing AI Studio trades a working demo today for more backend work in Phase 2. Its F2-2 failure is also the kind that is easy to under-fix: hiding the trip page from non-members does not fix an invite link that carries the trip's name, and both have to be done.
+
+**A second consequence.** My verdicts are not equally evidenced. AI Studio's come from driving the app as a non-member; bolt's come from reading source, because bolt never ran past sign-in. That asymmetry argues for the recommendation and is a caveat on the scores at the same time.
+
+## Handoff
+
+Pull request or issue proposing a FEATURES.md change: _(URL)_
+
+Proposing spec gaps 1, 2 and 3 as FEATURES.md changes: the F1 dependency in F2, a rule on what an invite link may encode, and a definition of "trip details" in F2-2. Gaps 5 and 6 are included as suggestions. Gap 4 is an architecture note rather than a FEATURES.md change and is raised separately in the team chat.
