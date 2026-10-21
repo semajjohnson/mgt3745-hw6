@@ -4,8 +4,8 @@ Feature: F2, Create a trip and invite members. Specification copied unchanged fr
 
 | Builder | Project name | Build time | Model |
 |---|---|---|---|
-| bolt.new | Tripcast | 8 minutes | _(as reported by bolt.new; not recorded)_ |
-| Google AI Studio | Trip Moments | 5m 7s | _(as reported by AI Studio; not recorded)_ |
+| bolt.new | Tripcast | 8 minutes | Standard |
+| Google AI Studio | Trip Moments | 5m 7s | 3.8 Flash|
 
 **The first finding, from the top row of the EVALS.md error log:** both builders invented a sign-in mechanism the specification never defines. F2-1 says "a signed-in person" and F2 never states its dependency on F1, so each builder filled the silence on its own. bolt built real email and password authentication on Supabase, a vendor absent from TOOLS.md and contrary to ADR-001, and handed back a `.env` file holding a live Supabase URL and anon key in a project whose own `.gitignore` does not list `.env`. AI Studio faked it with a person-switcher over `localStorage`, which makes F2-3's reusable link impossible to exercise across devices. One silent sentence in the spec produced an undocumented vendor crossing in one build and an untestable Must-be row in the other.
 
