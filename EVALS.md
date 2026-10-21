@@ -1,10 +1,10 @@
 # EVALS.md
 
-Committed 2026-10-19, before either builder was opened. Feature under test: F2, Create a trip and invite members (F2-1, F2-2, F2-3), from `context/FEATURES.md` at team commit `5731bf0d1855f2e91fd7387c55fdc8e5633af116`.
+Feature under test: F2, Create a trip and invite members (F2-1, F2-2, F2-3), from `context/FEATURES.md` at team commit `5731bf0d1855f2e91fd7387c55fdc8e5633af116`.
+
+**On the commit timing, stated plainly.** These three predictions were written on 2026-10-19, before either builder was opened. The commit did not land until 2026-10-20 at 14:05, which is after both builds ran that morning. The assignment's test is the commit timestamp, and by that test this stake is late. I am recording that rather than letting the file's date stand in for the commit's, because `git log` shows the difference and a prediction is only worth something if the account of it is accurate. The prediction text has not been edited since it was written; the resolutions beneath each one were added on 2026-10-20.
 
 ## Prediction Stake
-
-Committed before either builder was opened. Do not edit these predictions after the commit; resolve them beneath.
 
 ### Tight (a count)
 
@@ -40,7 +40,9 @@ Most frequent first. My top row is the first finding in COMPARISON.md.
 | Non-member sees full trip details with no invite link | AI Studio | 1 | F2-2 | Signed in as Elena, a non-member: name, creator, note, member count and invite link all visible. `docs/aistudio-f2-2-nonmember-sees-trip.png` |
 | Invite code built from the trip name, leaking it | AI Studio | 1 | F2-2 | `src/main.ts:184-186`. Produces `weekend-in-lisbon-k9x2qd`. Caught by `evals/invite-code.test.mjs`. |
 | A valid invite link cannot be used to join | bolt | 1 | F2-1, F2-3 | `views/join-view.js` destructures `{ data: session }` from `getSession()`, then checks `session.data?.session`, which is always undefined. |
-| Dashboard returns 500, trips never load | bolt | 1 | F2-1 | Four 500s against the Supabase host on a `created_at.desc` query, consistent with the self-referential `trip_members` access policy. `docs/bolt-f2-1-console-500.png` |
+| Dashboard returns 500, trips never load | bolt | 1 | F2-1 | Four 500s against the Supabase host on a `created_at.desc` query, consistent with the self-referential `trip_members` access policy. |
 | Returned a `.env` with live credentials, not gitignored | bolt | 1 | crossing | `project/.env` holds `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`; `project/.gitignore` does not list `.env`. |
 | Display name collected at sign-up but never stored | bolt | 1 | F2-1 | Members render as "Member <uuid prefix>"; the creator's row reads "You (creator)" to every viewer. |
 | Text below the 14px minimum, spacing off the 8px grid | bolt | 1 | style | `.member-role` at 12px; padding at 10px, 12px, 2px. AI Studio defines all four sizes as tokens, none below 14px. |
+| Second grader produced evidence it could not have had | Gemini 3.8 (judgment eval) | 1 | rubric | J8 cites `evals/invite-code.test.mjs`, absent from the packet; J18 cites a screenshot showing the opposite of its claim; J9 misstates bolt's dependency count. All 24 verdicts agreed. |
+| My own prediction stake committed after the builds ran | process | 1 | stake | Written 2026-10-19, committed 2026-10-20 at 14:05, after both builds. Recorded at the top of this file. |
